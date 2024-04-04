@@ -3,7 +3,9 @@ package com.JavaExampleProjects.emsbackend.Service.Impl;
 import com.JavaExampleProjects.emsbackend.Entity.User;
 import com.JavaExampleProjects.emsbackend.Exception.UserAlreadyExistsException;
 import com.JavaExampleProjects.emsbackend.Registration.RegistrationRequest;
+import com.JavaExampleProjects.emsbackend.Entity.VerificationToken;
 import com.JavaExampleProjects.emsbackend.Repository.UserRepository;
+import com.JavaExampleProjects.emsbackend.Repository.VerificationTokenRepository;
 import com.JavaExampleProjects.emsbackend.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final VerificationTokenRepository tokenRepository;
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -46,5 +49,11 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findByEmail(String email) {
 
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void saveUserVerificationToken(User theUser, String token) {
+        var verificationToken = new VerificationToken(token, theUser);
+        tokenRepository.save(verificationToken);
     }
 }
