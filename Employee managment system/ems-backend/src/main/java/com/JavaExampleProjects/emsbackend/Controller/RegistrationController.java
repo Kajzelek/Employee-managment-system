@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class RegistrationController {
 
     //Rejestruje użytkownika w bazie danych
     @PostMapping
-    public String registerUser(RegistrationRequest registrationRequest, final HttpServletRequest request){
+    public String registerUser(@RequestBody RegistrationRequest registrationRequest, final HttpServletRequest request){
         User user = userService.registerUser(registrationRequest); //Jeżeli user prawidłowo został zarejestrowany w bazie, to
 
         publisher.publishEvent(new RegistrationCompleteEvent(user, applicationUrl(request)));// klasa publisher, wykona metoda publishEvent
